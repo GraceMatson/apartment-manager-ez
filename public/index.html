@@ -1,89 +1,638 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ApexLiving | Aurora Residences Resident & Property Management Suite</title>
+  <meta name="description" content="Comprehensive apartment and property management web app with dual manager and tenant roles, maintenance collections, service desk for electrical and plumbing, announcements, bylaws, and financial statements.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+</head>
+<body>
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/12.19.0/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/12.19.0/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/12.19.0/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/12.19.0/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/12.19.0/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/12.19.0/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/12.19.0/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/12.19.0/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/12.19.0/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/12.19.0/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
+<div class="app-container">
+  
+  <!-- Sidebar Navigation -->
+  <aside class="sidebar" id="app-sidebar">
+    <!-- Brand -->
+    <div class="brand-section">
+      <div class="brand-icon">🏢</div>
+      <div class="brand-details">
+        <h1>ApexLiving</h1>
+        <span>Aurora Residences</span>
+      </div>
     </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
 
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+    <!-- Active Role Banner -->
+    <div class="role-badge-container">
+      <div class="active-role-pill role-pill-manager" id="role-indicator-pill">
+        👔 Manager View
+      </div>
+      <button class="role-switch-btn" id="role-quick-switch-btn" title="Switch between Manager and Tenant views">
+        ⇄ Switch Role
+      </button>
+    </div>
 
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
-        }
-      });
-    </script>
-  </body>
+    <!-- Navigation Menu -->
+    <nav class="sidebar-nav">
+      <div class="nav-label">Core Operations</div>
+      <a href="#" class="nav-item active" data-view="dashboard" id="nav-dashboard">
+        <span class="nav-icon">📊</span>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" data-view="maintenance" id="nav-maintenance">
+        <span class="nav-icon">💳</span>
+        <span>Maintenance & Dues</span>
+      </a>
+      <a href="#" class="nav-item" data-view="services" id="nav-services">
+        <span class="nav-icon">⚡</span>
+        <span>Service Desk</span>
+      </a>
+      <a href="#" class="nav-item" data-view="reminders" id="nav-reminders">
+        <span class="nav-icon">🔔</span>
+        <span>Reminders & Alerts</span>
+      </a>
+
+      <div class="nav-label">Community & Records</div>
+      <a href="#" class="nav-item" data-view="announcements" id="nav-announcements">
+        <span class="nav-icon">📢</span>
+        <span>Announcements</span>
+      </a>
+      <a href="#" class="nav-item" data-view="rules" id="nav-rules">
+        <span class="nav-icon">📜</span>
+        <span>Association Rules</span>
+      </a>
+      <a href="#" class="nav-item" data-view="minutes" id="nav-minutes">
+        <span class="nav-icon">📝</span>
+        <span>Meeting Minutes</span>
+      </a>
+      <a href="#" class="nav-item" data-view="expenses" id="nav-expenses">
+        <span class="nav-icon">📈</span>
+        <span>Expense Statements</span>
+      </a>
+    </nav>
+
+    <!-- Sidebar Footer Profile -->
+    <div class="sidebar-footer">
+      <div class="user-mini-card">
+        <div class="user-avatar" id="sidebar-user-avatar">SV</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebar-user-name">Sarah Vance</div>
+          <div class="user-subtext" id="sidebar-user-role">Property Manager</div>
+        </div>
+        <button class="logout-icon-btn" id="sidebar-logout-btn" title="Sign Out">
+          🚪
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Wrapper -->
+  <div class="main-wrapper">
+    
+    <!-- Topbar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="page-title-group">
+          <h2 id="page-heading">Resident & Property Dashboard</h2>
+          <p id="page-subheading">Overview of maintenance, tickets, and community alerts</p>
+        </div>
+      </div>
+
+      <div class="topbar-right">
+        <!-- Firebase Status -->
+        <div class="status-indicator" id="firebase-status-indicator">
+          <div class="status-dot"></div>
+          <span>Firebase Ready 🟢</span>
+        </div>
+
+        <!-- Reminders Notification Bell -->
+        <button class="reminder-bell-btn" id="reminder-bell-btn" title="View Reminders & Notices">
+          🔔
+          <span class="bell-counter" id="reminders-counter" style="display: none;">0</span>
+        </button>
+      </div>
+
+      <!-- Reminders Dropdown Tray -->
+      <div class="notification-tray" id="notification-tray">
+        <div class="tray-header">
+          <h4>Notifications & Reminders</h4>
+        </div>
+        <div class="tray-list" id="tray-list-root">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </header>
+
+    <!-- Dynamic Content Area -->
+    <main class="content-body" id="view-content-root">
+      <!-- Injected by JavaScript renderers -->
+    </main>
+  </div>
+</div>
+
+<!-- ================= MODALS ================= -->
+
+<!-- 1. Role & Profile Switcher Modal -->
+<div class="modal-backdrop" id="modal-switch-user">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3>Select Demo Role / User Profile</h3>
+      <button class="modal-close-btn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <p class="meta-label" style="margin-bottom: 20px;">
+        Instantly switch between management and tenant perspectives to test permissions and capabilities:
+      </p>
+
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        <!-- Manager Profile -->
+        <div class="stat-card" style="padding: 16px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="user-avatar" style="background: linear-gradient(135deg, #8B5CF6, #6366F1);">SV</div>
+            <div>
+              <div class="user-name">Sarah Vance</div>
+              <div class="meta-label">👔 Property General Manager (Association President)</div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-sm btn-select-profile" data-userid="usr-manager-1">
+            Login as Manager
+          </button>
+        </div>
+
+        <!-- Tenant Profile 1 -->
+        <div class="stat-card" style="padding: 16px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="user-avatar" style="background: linear-gradient(135deg, #06B6D4, #3B82F6);">AR</div>
+            <div>
+              <div class="user-name">Alex Rivera</div>
+              <div class="meta-label">🏠 Tenant • Unit 402 (Tower A, 2 BHK)</div>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-sm btn-select-profile" data-userid="usr-tenant-1">
+            Login as Tenant (402)
+          </button>
+        </div>
+
+        <!-- Tenant Profile 2 -->
+        <div class="stat-card" style="padding: 16px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div class="user-avatar" style="background: linear-gradient(135deg, #10B981, #059669);">ER</div>
+            <div>
+              <div class="user-name">Elena Rostova</div>
+              <div class="meta-label">🏠 Tenant • Unit 715 (Tower B, Penthouse)</div>
+            </div>
+          </div>
+          <button class="btn btn-secondary btn-sm btn-select-profile" data-userid="usr-tenant-2">
+            Login as Tenant (715)
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. Payment Gateway Simulator Modal -->
+<div class="modal-backdrop" id="modal-payment-gateway">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3>💳 Aurora Residences Payment Gateway</h3>
+      <button class="modal-close-btn">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div style="background: rgba(99, 102, 241, 0.1); border: 1px solid rgba(99, 102, 241, 0.3); border-radius: 12px; padding: 18px; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <div class="meta-label" id="pay-modal-unit">Unit 402</div>
+            <h4 id="pay-modal-period" style="font-size: 16px; color: #fff;">September 2026 Dues</h4>
+          </div>
+          <div style="text-align: right;">
+            <div class="meta-label">Total Payable</div>
+            <div style="font-size: 24px; font-weight: 800; color: #34D399;" id="pay-modal-amount">$285.00</div>
+          </div>
+        </div>
+      </div>
+
+      <input type="hidden" id="pay-modal-inv-id" value="">
+
+      <div class="form-group">
+        <label class="form-label" for="pay-method-select">Payment Method</label>
+        <select class="form-control" id="pay-method-select">
+          <option value="Credit / Debit Card (Visa/Mastercard)">Credit / Debit Card (Visa / Mastercard)</option>
+          <option value="Direct ACH / Bank Wire Transfer">Direct ACH / Bank Wire Transfer</option>
+          <option value="UPI / Instant Digital Payment">UPI / Instant Digital Payment</option>
+          <option value="Apple Pay / Google Wallet">Apple Pay / Google Wallet</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="pay-card-number">Card Number / Account ID</label>
+        <input type="text" class="form-control" id="pay-card-number" value="•••• •••• •••• 4242" readonly>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="pay-card-expiry">Expiry Date</label>
+          <input type="text" class="form-control" id="pay-card-expiry" value="08/29" readonly>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="pay-card-cvv">Security Code (CVV)</label>
+          <input type="password" class="form-control" id="pay-card-cvv" value="987" readonly>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary modal-close-btn">Cancel</button>
+      <button class="btn btn-success" id="btn-process-payment">Authorize & Pay Dues</button>
+    </div>
+  </div>
+</div>
+
+<!-- 3. Receipt Viewer Modal -->
+<div class="modal-backdrop" id="modal-receipt-viewer">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3>Verified Digital Payment Receipt</h3>
+      <button class="modal-close-btn">&times;</button>
+    </div>
+    <div class="modal-body" id="receipt-view-root">
+      <!-- Injected dynamically -->
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" onclick="window.print()">🖨 Print / Save as PDF</button>
+      <button class="btn btn-secondary modal-close-btn">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- 4. New Service Request Modal -->
+<div class="modal-backdrop" id="modal-new-service">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3>⚡ Submit Maintenance & Service Request</h3>
+      <button class="modal-close-btn">&times;</button>
+    </div>
+    <form id="form-new-service">
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="srv-cat-select">Service Category *</label>
+            <select class="form-control" id="srv-cat-select" required>
+              <option value="Electric">⚡ Electrical (Circuit breaker, power, lights)</option>
+              <option value="Plumbing">🚰 Plumbing (Leaks, low pressure, drains)</option>
+              <option value="HVAC">❄️ HVAC (AC, heating, ventilation)</option>
+              <option value="Carpentry">🔨 Carpentry & Door Hardware</option>
+              <option value="General">🏢 Common Area Facility</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="srv-urgency-select">Urgency Level *</label>
+            <select class="form-control" id="srv-urgency-select" required>
+              <option value="Normal">Normal (Routine scheduling)</option>
+              <option value="High">High (Impacting daily use)</option>
+              <option value="Emergency">Emergency (Active water leak / power loss)</option>
+              <option value="Low">Low (Preventative check)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="srv-title-input">Issue Summary *</label>
+          <input type="text" class="form-control" id="srv-title-input" placeholder="e.g. Kitchen sink drain clogged and leaking under cabinet" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="srv-desc-input">Detailed Description *</label>
+          <textarea class="form-control" id="srv-desc-input" placeholder="Please describe exactly what is occurring, when it started, and specific location..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="srv-slot-select">Preferred Visit Time Slot</label>
+          <select class="form-control" id="srv-slot-select">
+            <option value="Morning (9:00 AM - 12:00 PM)">Morning (9:00 AM - 12:00 PM)</option>
+            <option value="Afternoon (1:00 PM - 4:00 PM)">Afternoon (1:00 PM - 4:00 PM)</option>
+            <option value="Evening (4:00 PM - 7:00 PM)">Evening (4:00 PM - 7:00 PM)</option>
+            <option value="Anytime (Immediate Access)">Anytime (Immediate Access)</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-close-btn">Cancel</button>
+        <button type="submit" class="btn btn-primary">Submit Service Ticket</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 5. Manager Update Service Ticket Modal -->
+<div class="modal-backdrop" id="modal-update-ticket">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3>Assign & Update Service Request</h3>
+      <button class="modal-close-btn">&times;</button>
+    </div>
+    <form id="form-update-ticket">
+      <input type="hidden" id="update-ticket-id">
+      <div class="modal-body">
+        <div id="update-ticket-title" style="font-weight: 700; font-size: 15px; margin-bottom: 16px; color: #818CF8;"></div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="update-ticket-status">Ticket Status</label>
+            <select class="form-control" id="update-ticket-status">
+              <option value="Pending">Pending Review</option>
+              <option value="Assigned">Assigned to Technician</option>
+              <option value="In Progress">Work In Progress</option>
+              <option value="Resolved">Resolved & Inspected</option>
+              <option value="Closed">Closed</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="update-ticket-assign">Assigned Technician</label>
+            <input type="text" class="form-control" id="update-ticket-assign" placeholder="e.g. Sam Patel (Master Plumber)">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="update-ticket-phone">Technician Contact Phone</label>
+          <input type="text" class="form-control" id="update-ticket-phone" placeholder="+1 (555) 765-4321">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="update-ticket-notes">Resolution & Diagnostic Notes</label>
+          <textarea class="form-control" id="update-ticket-notes" placeholder="Explain work performed or scheduled visits..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-close-btn">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save Changes & Notify Resident</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 6. Manager Publish Announcement Modal -->
+<div class="modal-backdrop" id="modal-create-announcement">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3>📢 Publish Community Announcement</h3>
+      <button class="modal-close-btn">&times;</button>
+    </div>
+    <form id="form-create-announcement">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="ann-title-input">Announcement Title *</label>
+          <input type="text" class="form-control" id="ann-title-input" placeholder="e.g. Semi-Annual Overhead Tank Sanitization Schedule" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="ann-category-select">Category</label>
+            <select class="form-control" id="ann-category-select">
+              <option value="Maintenance">Maintenance & Utilities</option>
+              <option value="General">General Notice</option>
+              <option value="Event">Community Event</option>
+              <option value="Emergency">Urgent Advisory</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="ann-audience-input">Target Audience</label>
+            <input type="text" class="form-control" id="ann-audience-input" value="All Towers (A & B)">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="ann-content-input">Announcement Message Content *</label>
+          <textarea class="form-control" id="ann-content-input" rows="4" placeholder="Type the full announcement to broadcast to all apartment residents..." required></textarea>
+        </div>
+
+        <div class="form-group" style="display: flex; align-items: center; gap: 10px; margin-top: 10px;">
+          <input type="checkbox" id="ann-pinned-check" style="width: 18px; height: 18px; accent-color: var(--primary);">
+          <label for="ann-pinned-check" style="color: #fff; font-size: 13.5px; cursor: pointer;">
+            📌 Pin to top of Resident Notice Board as Urgent
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-close-btn">Cancel</button>
+        <button type="submit" class="btn btn-primary">Publish Announcement</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 7. Manager Add Association Rule Clause Modal -->
+<div class="modal-backdrop" id="modal-add-rule">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3>📜 Add Association Bylaw Clause</h3>
+      <button class="modal-close-btn">&times;</button>
+    </div>
+    <form id="form-add-rule">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="rule-section-select">Handbook Section</label>
+          <select class="form-control" id="rule-section-select">
+            <option value="1.0">Section 1.0 - Quiet Hours & Community Peace</option>
+            <option value="2.0">Section 2.0 - Parking Regulations & EV Protocol</option>
+            <option value="3.0">Section 3.0 - Pets & Domestic Animals</option>
+            <option value="4.0">Section 4.0 - Waste Management & Segregation</option>
+            <option value="5.0">Section 5.0 - Renovations & Moving</option>
+            <option value="6.0">Section 6.0 - Recreational Amenities & Pool</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="rule-clause-input">New Clause Text *</label>
+          <textarea class="form-control" id="rule-clause-input" placeholder="e.g. 1.4 Barbecues and open flames are strictly forbidden on private balconies due to city fire safety code..." required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-close-btn">Cancel</button>
+        <button type="submit" class="btn btn-primary">Publish Clause to Bylaws</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 8. Manager Publish Meeting Minutes Modal -->
+<div class="modal-backdrop" id="modal-publish-minutes">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3>📝 Publish Association Meeting Minutes</h3>
+      <button class="modal-close-btn">&times;</button>
+    </div>
+    <form id="form-publish-minutes">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="min-title-input">Meeting Title *</label>
+          <input type="text" class="form-control" id="min-title-input" placeholder="e.g. Executive Committee Special Meeting - September 2026" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="min-date-input">Meeting Date *</label>
+            <input type="date" class="form-control" id="min-date-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="min-time-input">Time & Duration</label>
+            <input type="text" class="form-control" id="min-time-input" placeholder="7:00 PM - 8:45 PM">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="min-venue-input">Venue</label>
+            <input type="text" class="form-control" id="min-venue-input" value="Clubhouse Boardroom">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="min-attendees-input">Attendees Count</label>
+            <input type="number" class="form-control" id="min-attendees-input" value="16">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="min-agenda-input">Agenda Points (one per line) *</label>
+          <textarea class="form-control" id="min-agenda-input" rows="3" placeholder="1. Solar rooftop installation vendor selection&#10;2. Common water pump overhaul&#10;3. Review of quarterly maintenance dues" required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="min-res-input">Formal Resolutions Adopted *</label>
+          <textarea class="form-control" id="min-res-input" rows="3" placeholder="e.g. Voted unanimously to award contract for solar panel project with budget cap of $22,000..." required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-close-btn">Cancel</button>
+        <button type="submit" class="btn btn-primary">Archive & Publish Minutes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 9. Manager Publish Expense Statement Modal -->
+<div class="modal-backdrop" id="modal-publish-expense">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3>📈 Publish Monthly Expense Statement</h3>
+      <button class="modal-close-btn">&times;</button>
+    </div>
+    <form id="form-publish-expense">
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="exp-period-input">Statement Month & Year *</label>
+            <input type="text" class="form-control" id="exp-period-input" placeholder="e.g. September 2026" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="exp-reserve-input">Reserve Fund Balance ($)</label>
+            <input type="number" class="form-control" id="exp-reserve-input" value="148500" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="exp-income-input">Total Collected Income ($) *</label>
+            <input type="number" class="form-control" id="exp-income-input" value="35200" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="exp-expenses-input">Total Operating Expenses ($) *</label>
+            <input type="number" class="form-control" id="exp-expenses-input" value="28900" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="exp-notes-input">Notes from Treasurer / President</label>
+          <textarea class="form-control" id="exp-notes-input" placeholder="Summary notes on major utility expenses, generator fuel, or reserve allocations..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-close-btn">Cancel</button>
+        <button type="submit" class="btn btn-primary">Publish Financial Statement</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 10. Manager Issue Assessment Modal -->
+<div class="modal-backdrop" id="modal-issue-dues">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3>📋 Issue Monthly Maintenance Assessment</h3>
+      <button class="modal-close-btn">&times;</button>
+    </div>
+    <form id="form-issue-dues">
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="issue-period-input">Assessment Period *</label>
+            <input type="text" class="form-control" id="issue-period-input" placeholder="e.g. October 2026" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="issue-duedate-input">Due Date *</label>
+            <input type="date" class="form-control" id="issue-duedate-input" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="issue-base-input">Base Maintenance ($)</label>
+            <input type="number" class="form-control" id="issue-base-input" value="180" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="issue-sinking-input">Sinking Fund ($)</label>
+            <input type="number" class="form-control" id="issue-sinking-input" value="40" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="issue-water-input">Water & Common Utility ($)</label>
+            <input type="number" class="form-control" id="issue-water-input" value="45" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="issue-parking-input">Parking Charge ($)</label>
+            <input type="number" class="form-control" id="issue-parking-input" value="20" required>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-close-btn">Cancel</button>
+        <button type="submit" class="btn btn-primary">Generate Invoices & Notify Residents</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- 11. Manager Send Custom Reminder Modal -->
+<div class="modal-backdrop" id="modal-send-reminder">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <h3>🔔 Send Resident Dues Reminder</h3>
+      <button class="modal-close-btn">&times;</button>
+    </div>
+    <form id="form-send-reminder">
+      <div class="modal-body">
+        <div id="send-rem-target" style="font-weight: 700; color: #fff; margin-bottom: 12px;"></div>
+
+        <div class="form-group">
+          <label class="form-label" for="send-rem-msg">Reminder Notice Message</label>
+          <textarea class="form-control" id="send-rem-msg" rows="4" required></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary modal-close-btn">Cancel</button>
+        <button type="submit" class="btn btn-primary">Dispatch Reminder</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toast-container"></div>
+
+<script type="module" src="js/app.js"></script>
+</body>
 </html>

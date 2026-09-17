@@ -22,21 +22,27 @@ class AppState {
   constructor() {
     this.currentUser = null;
     this.activeView = 'dashboard'; // dashboard, maintenance, services, announcements, rules, minutes, expenses, reminders
-    this.data = this.loadState();
     this.subscribers = [];
+    this.data = this.loadState();
   }
 
   loadState() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        if (parsed && parsed.users && parsed.maintenance && parsed.maintenance.length > 0) {
+          return parsed;
+        }
       }
     } catch (e) {
       console.warn('Failed to load from localStorage, using initial seed data');
     }
-    this.saveState(INITIAL_DATA);
-    return JSON.parse(JSON.stringify(INITIAL_DATA));
+    const initial = JSON.parse(JSON.stringify(INITIAL_DATA));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
+    } catch (e) {}
+    return initial;
   }
 
   saveState(newData) {
@@ -50,11 +56,21 @@ class AppState {
   }
 
   subscribe(callback) {
-    this.subscribers.push(callback);
+    if (typeof callback === 'function') {
+      this.subscribers.push(callback);
+    }
   }
 
   notify() {
-    this.subscribers.forEach(cb => cb(this));
+    if (this.subscribers && Array.isArray(this.subscribers)) {
+      this.subscribers.forEach(cb => {
+        try {
+          cb(this);
+        } catch (err) {
+          console.error('Subscriber error:', err);
+        }
+      });
+    }
   }
 
   setCurrentUser(user) {
@@ -1894,7 +1910,7 @@ function handleLogout() {
 }
 
 // ================= Application Bootstrap =================
-document.addEventListener('DOMContentLoaded', () => {
+function bootstrap() {
   console.log('🚀 ApexLiving Web App initializing...');
 
   // Set up Firebase status in topbar
@@ -1979,4 +1995,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initial UI Render
   updateProfilePillUI();
   setActiveView('dashboard');
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootstrap);
+} else {
+  bootstrap();
+}

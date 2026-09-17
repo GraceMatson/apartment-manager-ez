@@ -1,17 +1,16 @@
 /**
- * ApexLiving Apartment Management Suite
- * Firebase Configuration & Service Layer
+ * Sreeja Fantasy Apartments - Resident & Property Management Suite
+ * Firebase Configuration & Service Layer (Vite/React)
  */
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+import { initializeApp } from "firebase/app";
 import { 
   getAuth, 
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
+  GoogleAuthProvider,
+  signInWithPopup,
   signOut, 
-  onAuthStateChanged,
-  updateProfile
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+  onAuthStateChanged
+} from "firebase/auth";
 import { 
   getFirestore, 
   collection, 
@@ -25,9 +24,8 @@ import {
   where, 
   orderBy,
   onSnapshot 
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js";
+} from "firebase/firestore";
 
-// Your web app's Firebase configuration
 export const firebaseConfig = {
   apiKey: "AIzaSyD1mDSRkdGOkB8PTPhsgBWXxy2vxZp-9Ug",
   authDomain: "apartment-manager-ez.firebaseapp.com",
@@ -41,29 +39,39 @@ export const firebaseConfig = {
 let app = null;
 let auth = null;
 let db = null;
+let googleProvider = null;
 let isFirebaseOnline = false;
 
 try {
   app = initializeApp(firebaseConfig);
   auth = getAuth(app);
   db = getFirestore(app);
+  googleProvider = new GoogleAuthProvider();
+  googleProvider.setCustomParameters({ prompt: 'select_account' });
   isFirebaseOnline = true;
-  console.log("🔥 Firebase initialized successfully with project apartment-manager-ez");
+  console.log("🔥 Firebase initialized successfully for Sreeja Fantasy Apartments");
 } catch (error) {
-  console.warn("⚠️ Firebase live connection warning (using offline/demo resilient store):", error);
+  console.warn("⚠️ Firebase live connection note (demo store active):", error);
   isFirebaseOnline = false;
+}
+
+export async function loginWithGoogle() {
+  if (!auth || !googleProvider) {
+    throw new Error("Firebase Auth is not available. Check configuration.");
+  }
+  const result = await signInWithPopup(auth, googleProvider);
+  return result.user;
 }
 
 export { 
   app, 
   auth, 
   db, 
+  googleProvider,
   isFirebaseOnline,
-  signInWithEmailAndPassword, 
-  createUserWithEmailAndPassword, 
+  signInWithPopup,
   signOut, 
   onAuthStateChanged,
-  updateProfile,
   collection, 
   doc, 
   getDocs, 

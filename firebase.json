@@ -1,11 +1,17 @@
 {
   "hosting": {
-    "public": "public",
+    "public": "dist",
     "site": "apartment-manager-ez-pz",
     "ignore": [
       "firebase.json",
       "**/.*",
       "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
     ]
   }
 }
